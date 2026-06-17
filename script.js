@@ -26,7 +26,6 @@ function play() {
     mathNames.push("int");
     var binded = mathNames.map(k => Math[k]);
     binded[45] = Math.floor;
-    console.log(binded);
     let funct = new Function(...mathNames,"t",`return ${cod}`).bind(null, ...binded);
     let mode = document.getElementById("mode").value;
    let advt = 0;
