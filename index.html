@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>No, bake ME a byte!</title>
+    <script src="https://cdn.jsdelivr.net/npm/js-base64@3.7.8/base64.min.js"></script>
+</head>
+<body>
+    <textarea id="t" rows="20" cols="100"></textarea><br>
+    <input type="number" id="sr" value="8000">
+    <input type="number" id="tim" value="10" style="display:none;">
+    <button onclick="play()" id="playBtn">Play</button>
+    <button onclick="stop()" id="playBtn">Stop</button>
+    <select name="mode" id="mode">
+        <option disabled="true">- NORMAL MODES -</option>
+        <option selected="selected">Bytebeat</option>
+        <option>Signed Bytebeat</option>
+        <option>Floatbeat</option>
+        <option disabled="true">- EXOTIC MODES -</option> 
+        <option>Bitbeat</option>
+        <option>Bitbeat (Alt)</option>
+        <option>2048Mode</option>
+    </select>
+    <br>
+    <canvas id="viz" width="800" height="256">Visualizer of bytebeat player</canvas>
+    <script src="script.js"></script>
+</body>
+</html>
