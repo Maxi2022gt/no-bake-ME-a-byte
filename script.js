@@ -13,12 +13,25 @@ var ctx = c.getContext("2d");
 
 ctx.filLStyle = "white"
 ctx.fillRect(0,0,400,256);
-
+let hp = [0,0];
 if (!sndctx) sndctx = new AudioContext();
-const src = sndctx.createBufferSource();
-const node = sndctx.createScriptProcessor(4096,1,1);
+let src;
+let node;
+const op = document.getElementById("hpf");
+if (localStorage.getItem("enabledHPF") != undefined) {localStorage.setItem("enabledHPF",false);}
+else {op.enabled = localStorage.getItem("enabledHPF");}
+op.addEventListener('change',()=>{
+    localStorage.setItem("enabledHPF",op.checked);
+})
 
 function play() {
+    // if (typeof src != "undefined" && typeof node != "undefined") stop();
+
+    document.getElementById("playBtn").disabled = true;
+    document.getElementById("stopBtn").disabled = false;
+    src = sndctx.createBufferSource();
+    node = sndctx.createScriptProcessor(4096,1,1);
+
     const sr = 48000;
     const faksr = Number(document.getElementById("sr").value) || 8000;
     let cod = document.getElementById("t").value;
@@ -28,8 +41,11 @@ function play() {
     binded[45] = Math.floor;
     let funct = new Function(...mathNames,"t",`return ${cod}`).bind(null, ...binded);
     let mode = document.getElementById("mode").value;
-   let advt = 0;
-    node.addEventListener("audioprocess",(audioProcessingEvent)=>{
+    let advt = 0;
+   // index 0 = prev,
+   // index 1 = filt
+    hp = [0,0];
+    node.onaudioprocess = (audioProcessingEvent)=>{
         let output = audioProcessingEvent.outputBuffer.getChannelData(0);
 
         for (let sample = 0; sample < output.length; sample++) {
@@ -54,13 +70,21 @@ function play() {
                     output[sample] = (funct(t) & 2047) / 1024 - 0.5 || 0;;
                     break;
             }
-            ctx.fillStyle = "white";
-            ctx.fillRect(sample/4096*800,-output[sample]*100+200,1,1);
+            hp[0] = output[sample];
+            if (op.checked) {
+                hp[1] = hp[0]*.001+hp[1]*.999;
+            }
+
+            output[sample] = output[sample]-hp[1];
+
             ctx.fillStyle = "black";
             ctx.fillRect(sample/4096*800,0,1,256);
+
+            ctx.fillStyle = "white";
+            ctx.fillRect(sample/4096*800,128-output[sample]*63,1,1);
         }
         advt++;
-    })
+    };
 
     src.connect(node);
     node.connect(sndctx.destination);
@@ -69,6 +93,8 @@ function play() {
 }
 
 function stop() {
+    document.getElementById("playBtn").disabled = false;
+    document.getElementById("stopBtn").disabled = true;
     src.disconnect(node);
     node.disconnect(sndctx.destination);
     src.stop();

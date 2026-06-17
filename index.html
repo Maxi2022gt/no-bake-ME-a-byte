@@ -6,13 +6,16 @@
     <link rel="stylesheet" href="style.css">
     <title>No, bake ME a byte!</title>
     <script src="https://cdn.jsdelivr.net/npm/js-base64@3.7.8/base64.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
 </head>
 <body>
     <textarea id="t" rows="20" cols="100"></textarea><br>
     <input type="number" id="sr" value="8000">
     <input type="number" id="tim" value="10" style="display:none;">
     <button onclick="play()" id="playBtn">Play</button>
-    <button onclick="stop()" id="playBtn">Stop</button>
+    <button onclick="stop()" id="stopBtn" disabled>Stop</button>
     <select name="mode" id="mode">
         <option disabled="true">- NORMAL MODES -</option>
         <option selected="selected">Bytebeat</option>
@@ -24,7 +27,16 @@
         <option>2048Mode</option>
     </select>
     <br>
-    <canvas id="viz" width="800" height="256">Visualizer of bytebeat player</canvas>
+    <canvas id="viz" width="800" height="210">Visualizer of bytebeat player</canvas>
+    <br>
+    <section>
+        <details>
+            <summary>Options</summary>
+            <article>
+                <input type="checkbox" id="hpf"> Enable DC remover
+            </article>
+        </details>
+    </section>
     <script src="script.js"></script>
 </body>
 </html>

@@ -1,6 +1,9 @@
 body, input, select {
     background-color: black;
     color: white;
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
 }
 
 textarea {
@@ -9,6 +12,10 @@ textarea {
     color: white;
 }
 
+button:disabled {
+    background-color: black;
+    color: gray;
+}
 
 button {
     width: 100px;
